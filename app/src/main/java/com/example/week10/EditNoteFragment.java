@@ -1,14 +1,15 @@
 package com.example.week10;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 /**
@@ -21,7 +22,6 @@ public class EditNoteFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_NOTE = "content";
-
     private String content;
     private EditText txtContent;
 
@@ -34,8 +34,7 @@ public class EditNoteFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param content Parameter 1.
      * @return A new instance of fragment EditNoteFragment.
      */
     // TODO: Rename and change types and number of parameters
@@ -43,7 +42,6 @@ public class EditNoteFragment extends Fragment {
         EditNoteFragment fragment = new EditNoteFragment();
         Bundle args = new Bundle();
         args.putString(ARG_NOTE, content);
-
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,6 +52,7 @@ public class EditNoteFragment extends Fragment {
         if (getArguments() != null) {
             content = getArguments().getString(ARG_NOTE);
         }
+
     }
 
     @Override
@@ -70,9 +69,14 @@ public class EditNoteFragment extends Fragment {
         if (content != null){
             txtContent.setText(content);
         }
+        txtContent.requestFocus();
+        txtContent.post(()-> {
+            InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(txtContent,InputMethodManager.SHOW_IMPLICIT);
+        });
     }
 
-    public String getContent() {
+    public String getContent(){
         return txtContent.getText().toString();
     }
 }
